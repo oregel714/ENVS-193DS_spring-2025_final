@@ -1,0 +1,55 @@
+---
+title: "193DS_final"
+author: "Mark Oregel"
+date: "June 11, 2025"
+format: html
+---
+
+### GitHub repository: 
+https://github.com/oregel714/ENVS-193DS_spring-2025_final
+
+```{r, message=FALSE}
+
+# reading in packages 
+library(tidyverse)
+library(here)
+library(gt)
+library(janitor)
+library(readxl)
+library(dplyr)
+library(MuMIn)
+library(DHARMa)
+
+# reading in data set 
+
+sst <- read_csv("SST_update2023.csv")
+
+```
+
+
+
+
+# Problem 1: 
+
+a. In part 1, they used a Pearson's correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. 
+In part 2, they used a linear model to determine if there the source of nitrogen influences average nitrogen load. 
+
+b. 
+
+
+
+
+# Problem 2: 
+
+a. Cleaning and Summarizing 
+
+```{r, message=FALSE}
+
+sst_clean <- sst |>
+  
+  
+
+```
+
+
+
