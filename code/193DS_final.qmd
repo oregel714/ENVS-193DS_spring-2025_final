@@ -3,6 +3,9 @@ title: "193DS_final"
 author: "Mark Oregel"
 date: "June 11, 2025"
 format: html
+  html: 
+    toc: true 
+    toc-depth: 5
 ---
 
 ### GitHub repository: 
@@ -19,10 +22,11 @@ library(readxl)
 library(dplyr)
 library(MuMIn)
 library(DHARMa)
+library(lubridate)
 
 # reading in data set 
 
-sst <- read_csv("SST_update2023.csv")
+sst <- read_csv(here("data", "SST_update2023.csv"))
 
 ```
 
@@ -45,10 +49,22 @@ a. Cleaning and Summarizing
 
 ```{r, message=FALSE}
 
-sst_clean <- sst |>
-  
-  
+sst_clean <- sst |> # creating new data object from original data set
+  select(date, temp) |> # selecting relevant 
+  mutate( # changing columns to year and date 
+    year = year(date), # specifiying dat as a year  
+    month = month(date, label = TRUE, abbr = TRUE) # label and abbreviate the month date 
+  ) |> 
+  filter(year %in% c(2018, 2019, 2020, 2021, 2022, 2023)) |> # filtering the data for only the specified years 
+  select(-date) |> # getting rid of the original date column 
+  group_by(year, month) |> # grouping by year and month 
+  summarise(mean_monthly_sst = mean(temp, na.rm = TRUE), .groups = "drop")  |> # summarizing  the mean monthly surface temperatures 
+  mutate(mean_monthly_sst = round(mean_monthly_sst, 1), year = as.factor(year)) # changing the 'mean_monthly_sst' to be rounded and setting 'year' as a factor 
 
+sst_clean |> # taking the 'sst_clean' object and sampling 5 observations 
+  slice_sample(n=5)
+
+str(sst_clean) # displaying the sample 
 ```
 
 
