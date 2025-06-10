@@ -67,5 +67,47 @@ sst_clean |> # taking the 'sst_clean' object and sampling 5 observations
 str(sst_clean) # displaying the sample 
 ```
 
+b. Visualization 
+```{r, message=FALSE}
+
+ggplot(data = sst_clean, # starting with data set 'sst_clean' 
+       aes(x = month, # setting x axis as 'month'
+           y = mean_monthly_sst, # setting y axis as 'mean_monthly_sst'
+           group = year, # grouping by year 
+           color = year # coloring the year 
+           )) +
+  geom_line(size = 1) + # setting the size of the line 
+  geom_point(size = 2) + # setting the size of the points representing the means
+  scale_color_manual( # setting the colors of each year manually 
+    values = c(
+      "2018" = "#292f56",
+      "2019" = "#1e4572",
+      "2020" = "#005c8b",
+      "2021" = "#007498",
+      "2022" = "#008ba0",
+      "2023" = "#00a3a4"
+    )
+  ) +
+  scale_x_discrete( # abbreviating the months on the x axis 
+    limits = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+  ) +
+  
+  theme_bw() + # setting the theme to black and white 
+  labs(y = "Mean monthly sea surface temperature (°C)", # setting titles for axes 
+       x = "Month",
+       color = "Year"
+       ) + 
+  theme( # changing the size/position of the text in the legend and axes to fit the graph 
+    legend.position = c(0.1, 0.75), 
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title = element_text(size = 13),
+    axis.text = element_text(size = 11),
+    panel.grid.major = element_blank(), # removing the grids/panels in the back of the graph
+    panel.grid.minor = element_blank(),
+    
+  )
+```
+
 
 
