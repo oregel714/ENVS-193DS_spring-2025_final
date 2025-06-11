@@ -38,7 +38,7 @@ nest_boxes <- read_csv(here("data", "occdist.csv"))
 # Problem 1: 
 
 a. In part 1, they used a Pearson's correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. 
-In part 2, they used a linear model to determine if there the source of nitrogen influences average nitrogen load. 
+In part 2, they used an Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load. 
 
 b. 
 
@@ -78,16 +78,16 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
            group = year, # grouping by year 
            color = year # coloring the year 
            )) +
-  geom_line(linewidth = 1) + # setting the size of the line 
+  geom_line(linewidth = 0.5) + # setting the size of the line 
   geom_point(linewdith = 2) + # setting the size of the points representing the means
   scale_color_manual( # setting the colors of each year manually 
     values = c(
-      "2018" = "#292f56",
-      "2019" = "#1e4572",
-      "2020" = "#005c8b",
-      "2021" = "#007498",
-      "2022" = "#008ba0",
-      "2023" = "#00a3a4"
+      "2023" = "#292f56",
+      "2022" = "#1e4572",
+      "2021" = "#005c8b",
+      "2020" = "#007498",
+      "2019" = "#008ba0",
+      "2018" = "#00a3a4"
     )
   ) +
   scale_x_discrete( # abbreviating the months on the x axis 
