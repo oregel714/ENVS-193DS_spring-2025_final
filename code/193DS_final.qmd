@@ -183,7 +183,7 @@ model3 <- glm(
 f. Check the diagnostics 
 
 ```{r, message=FALSE, model-diagnostics}
-# display plots in a 2x2 grid 
+ 
 plot(
   simulateResiduals(model0)
 )
@@ -199,9 +199,55 @@ plot(
 
 ```
 
+# g. Select the best model: 
+
+```{r model-selection, message=FALSE}
+
+# using Akaike's Information Criterion to choose the best model 
+AICc(
+  model0,
+  model1,
+  model2,
+  model3
+) |> 
+  arrange(AICc)
+
+```
+
+The best model as determined by Akaike's Information Criterion (ACI) uses season and edge distance (F(0.23, 0.89), )
 
 
 
+```{r summarizing model coefficients}
+
+summary(model1)
+
+```
+
+```{r, message=FALSE}
+gtsummary::tbl_regression(model1,
+                          exponentiate = TRUE)
+
+```
+
+With every 1 meter increase in edge distance, the odds of a box being occupied by a Swift Parrot decrease by a factor of 0.46 (95% CI: [0.23, 0.89], p = 0.022, $a$ = 0.05). 
+
+
+# Problem 4: 
+
+### a. Comparing visualizations:
+
+The visualization that I made for homework 2 was simple and did not display anything meaningful about my data and the patterns that were present. Granted this was when I had very few observations, but my point still stands. My visualization for homework 3 had means between groups, standard error, and quantiles expressing what I had hoped to gather from my personal observations. 
+
+A similarity that I found is that I chose the same groups that I represented in homework 3 in homework 2 as well. Additionally, I decided to stay with 'money spent' as one of my variables for my visualizations in both homework 2 and 3. 
+
+There aren't very many patterns in my homework 2 visualization other than that I classified my days where I am on campus longer than 6 hours as my long days and days less than 6 hours as my short days. There are more obvious patterns in my homework 3 visualization as this is where I was able to fully display my observations. I noticed that I typically spend more money on long days and on short days, I have a noticeable amount of observations where I spend no money at all. This makes perfect sense as I do my best to not spend money on days where I am on campus for a short amount of time, but alas, these observations would say otherwise. 
+
+The feedback I received in week 9 in workshop primarily pertained to my artist statement and my use of drawings. People recommended that I implement a physical aspect to the visualization as my drawings would be able to be replicated onto the physical objects themselves; these being a yerba mate can and a coffee cup. I ended up drawing the points on these physical objects with a marker to make it stand out, unfortunately, my roommate mistook them as trash on our dining room table and threw them away :(. 
+
+### b. Sharing your affective visualization
+
+I attended workshop :). 
 
 
 
