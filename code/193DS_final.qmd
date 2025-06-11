@@ -144,6 +144,70 @@ The two seasons (years) the authors are referring to are 2016 and 2019. Subordin
 | 0       |        |                           | no predictors (null model) |
 | 1       |    X   |            X              | all predictors (full model)| 
 | 2       |    X   |                           | season                     | 
-| 3       |        |            X              | distance to forest edge    |    
+| 3       |        |            X              | distance to forest edge    |
+
+### e. Run the models:
+
+```{r, message=FALSE}
+
+# model 0: null model 
+model0 <- glm(
+  sp ~ 1, # formula for null model 
+  data = clean_nb, # data frame
+  family = "binomial" # indicating distribution 
+)
+
+# model 1: saturated model 
+model1 <- glm(
+  sp ~ edge_distance + season,
+  data = clean_nb,
+  family = "binomial"
+)
+
+# model 2: season 
+model2 <- glm(
+  sp ~ season,
+  data = clean_nb,
+  family = "binomial"
+)
+
+# model 3: distance from forest edge 
+model3 <- glm(
+  sp ~ edge_distance,
+  data = clean_nb,
+  family = "binomial"
+)
+
+```
+
+f. Check the diagnostics 
+
+```{r, message=FALSE, model-diagnostics}
+# display plots in a 2x2 grid 
+plot(
+  simulateResiduals(model0)
+)
+plot(
+  simulateResiduals(model1)
+)
+plot(
+  simulateResiduals(model2)
+)
+plot(
+  simulateResiduals(model3)
+)
+
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
