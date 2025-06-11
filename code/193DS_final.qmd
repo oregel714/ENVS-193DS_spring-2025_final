@@ -28,6 +28,8 @@ library(lubridate)
 
 sst <- read_csv(here("data", "SST_update2023.csv"))
 
+nest_boxes <- read_csv(here("data", "occdist.csv"))
+
 ```
 
 
@@ -109,5 +111,17 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
   )
 ```
 
+# Problem 3: 
 
+```{r, message=FALSE}
+
+clean_nb <- nest_boxes |>
+  clean_names() |>
+  select(-box, -event_id, -repeated_use) |>
+  mutate(season = as.factor(season))
+
+```
+
+
+a. 
 
