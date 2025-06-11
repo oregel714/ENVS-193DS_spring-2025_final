@@ -23,6 +23,7 @@ library(dplyr)
 library(MuMIn)
 library(DHARMa)
 library(lubridate)
+library(ggeffects)
 
 # reading in data set 
 
@@ -38,7 +39,7 @@ nest_boxes <- read_csv(here("data", "occdist.csv"))
 # Problem 1: 
 
 a. In part 1, they used a Pearson's correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. 
-In part 2, they used an Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load. 
+In part 2, they used an One-way Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load. 
 
 b. 
 
@@ -214,7 +215,58 @@ AICc(
 
 ```
 
-The best model as determined by Akaike's Information Criterion (ACI) uses season and edge distance (F(0.23, 0.89), )
+The best model as determined by Akaike's Information Criterion (ACI) uses season and edge distance. 
+
+### h. Visualize the model predictions: 
+
+```{r visiualizing the model predictions, message=FALSE}
+
+mod_preds <- ggpredict(model1,
+          terms = c("edge_distance [all]", "season"))
+
+ggplot(clean_nb,
+       aes(x = edge_distance,
+           y = sp,
+           color = season)) + 
+  geom_point(data = clean_nb,
+             size = 2,
+             alpha = 0.4) + 
+  geom_ribbon(data = mod_preds,
+              aes(x = x,
+                  y = predicted,
+                  ymin = conf.low,
+                  ymax = conf.high,
+                  fill = group),
+              alpha = 0.4,
+              color = NA) + 
+  geom_line(data = mod_preds,
+            aes(x = x,
+                y = predicted,
+                color = group),
+            linewidth = 1) +
+  scale_y_continuous(limits = c(0, 1),
+                     breaks = c(0, 1)) + 
+  theme_bw() + 
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) + 
+  labs(x = "Edge Distance (meters)",
+       y = "Swift Parrot Occupancy Probability",
+       color = "Year",
+       fill = "Year",
+       
+  ) + 
+  scale_color_manual(values = c("2016" = "olivedrab",
+                                "2019" = "blue")) + 
+  scale_fill_manual(values = c("2016" = "olivedrab",
+                               "2019" = "blue"))
+
+```
+
+### i. Write a caption for your figure: 
+
+
 
 
 
