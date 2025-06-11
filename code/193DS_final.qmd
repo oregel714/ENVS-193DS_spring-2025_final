@@ -3,7 +3,7 @@ title: "193DS_final"
 author: "Mark Oregel"
 date: "June 11, 2025"
 format: html
-  html: 
+html: 
     toc: true 
     toc-depth: 5
 ---
@@ -47,7 +47,7 @@ b.
 
 # Problem 2: 
 
-a. Cleaning and Summarizing 
+### a. Cleaning and Summarizing 
 
 ```{r, message=FALSE}
 
@@ -69,7 +69,7 @@ sst_clean |> # taking the 'sst_clean' object and sampling 5 observations
 str(sst_clean) # displaying the sample 
 ```
 
-b. Visualization 
+### b. Visualization 
 ```{r, message=FALSE}
 
 ggplot(data = sst_clean, # starting with data set 'sst_clean' 
@@ -78,8 +78,8 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
            group = year, # grouping by year 
            color = year # coloring the year 
            )) +
-  geom_line(size = 1) + # setting the size of the line 
-  geom_point(size = 2) + # setting the size of the points representing the means
+  geom_line(linewidth = 1) + # setting the size of the line 
+  geom_point(linewdith = 2) + # setting the size of the points representing the means
   scale_color_manual( # setting the colors of each year manually 
     values = c(
       "2018" = "#292f56",
@@ -115,13 +115,35 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
 
 ```{r, message=FALSE}
 
-clean_nb <- nest_boxes |>
-  clean_names() |>
-  select(-box, -event_id, -repeated_use) |>
-  mutate(season = as.factor(season))
+clean_nb <- nest_boxes |> # creating new data object 
+  clean_names() |> # cleaning names of columns 
+  select(-box, -event_id, -repeated_use) |> # de-selecting 
+  mutate(season = as.factor(season)) # indicating 'season' as a factor 
 
 ```
 
 
-a. 
+### a. Response Variable:
+
+Biologically speaking, the 1s and 0s are binary values indicating which species is present in the nest box for the observation. There are three species, whichever species is present for that observation, a 1 denotes the presence of the species or an empty box while the other species are denoted by 0s to indicate their absence. 
+
+### b. Purpose of Study: 
+
+In the context of the study, nesting boxes are targeted towards the Swift Parrot species while the other species of interest, Common Starling and Tree Martin, are competitors who have been exploiting the nesting boxes more than the Swift Parrots. 
+
+### c. Difference in "seasons":
+
+The two seasons (years) the authors are referring to are 2016 and 2019. Subordinate native nest competitors increased the likelihood of box occupancy the farther away from the forest edge in both years, however, this relationship was observed to be stronger in 2019. 
+
+### d. Table of models: 
+
+4 models total:
+
+| Model # | Season | Distance to forest edge   | Model description          |  
+|:-------:|:------:|:-------------------------:|:--------------------------:|  
+| 0       |        |                           | no predictors (null model) |
+| 1       |    X   |            X              | all predictors (full model)| 
+| 2       |    X   |                           | season                     | 
+| 3       |        |            X              | distance to forest edge    |    
+
 
