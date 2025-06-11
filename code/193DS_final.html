@@ -153,18 +153,19 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data set </span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"SST_update2023.csv"</span>))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"occdist.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data set </span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"SST_update2023.csv"</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"occdist.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="problem-1" class="level1">
 <h1>Problem 1:</h1>
 <ol type="a">
-<li><p>In part 1, they used a Pearson’s correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. In part 2, they used an Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load.</p></li>
+<li><p>In part 1, they used a Pearson’s correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. In part 2, they used an One-way Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load.</p></li>
 <li></li>
 </ol>
 </section>
@@ -191,11 +192,11 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2018  Jul               18.2
-2 2018  Sep               18.2
-3 2019  Oct               17.1
-4 2023  Dec               16.1
-5 2019  Dec               15  </code></pre>
+1 2020  Sep               18.7
+2 2023  Nov               16.8
+3 2022  Mar               13.3
+4 2023  May               14.3
+5 2022  Nov               15  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># displaying the sample </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -431,9 +432,63 @@ model2  2 236.3744
 model0  1 238.8318</code></pre>
 </div>
 </div>
-<p>The best model as determined by Akaike’s Information Criterion (ACI) uses season and edge distance (F(0.23, 0.89), )</p>
+<p>The best model as determined by Akaike’s Information Criterion (ACI) uses season and edge distance.</p>
+<section id="h.-visualize-the-model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="h.-visualize-the-model-predictions">h. Visualize the model predictions:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod_preds <span class="ot">&lt;-</span> <span class="fu">ggpredict</span>(model1,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance [all]"</span>, <span class="st">"season"</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_nb,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> edge_distance,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> sp,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> season)) <span class="sc">+</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> clean_nb,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> mod_preds,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> x,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> predicted,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymin =</span> conf.low,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> conf.high,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> group),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span> </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> mod_preds,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> x,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> predicted,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> group),</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Edge Distance (meters)"</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Swift Parrot Occupancy Probability"</span>,</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Year"</span>,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Year"</span>,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>       </span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"2016"</span> <span class="ot">=</span> <span class="st">"olivedrab"</span>,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"2019"</span> <span class="ot">=</span> <span class="st">"blue"</span>)) <span class="sc">+</span> </span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"2016"</span> <span class="ot">=</span> <span class="st">"olivedrab"</span>,</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"2019"</span> <span class="ot">=</span> <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="193DS_final_files/figure-html/visiualizing%20the%20model%20predictions-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="i.-write-a-caption-for-your-figure" class="level3">
+<h3 class="anchored" data-anchor-id="i.-write-a-caption-for-your-figure">i. Write a caption for your figure:</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -458,26 +513,26 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gtsummary<span class="sc">::</span><span class="fu">tbl_regression</span>(model1,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gtsummary<span class="sc">::</span><span class="fu">tbl_regression</span>(model1,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="zhnpfaegof" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zhnpfaegof table {
+<div id="rxumctyvse" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rxumctyvse table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zhnpfaegof thead, #zhnpfaegof tbody, #zhnpfaegof tfoot, #zhnpfaegof tr, #zhnpfaegof td, #zhnpfaegof th {
+#rxumctyvse thead, #rxumctyvse tbody, #rxumctyvse tfoot, #rxumctyvse tr, #rxumctyvse td, #rxumctyvse th {
   border-style: none;
 }
 
-#zhnpfaegof p {
+#rxumctyvse p {
   margin: 0;
   padding: 0;
 }
 
-#zhnpfaegof .gt_table {
+#rxumctyvse .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -503,12 +558,12 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_caption {
+#rxumctyvse .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zhnpfaegof .gt_title {
+#rxumctyvse .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -520,7 +575,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-bottom-width: 0;
 }
 
-#zhnpfaegof .gt_subtitle {
+#rxumctyvse .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -532,7 +587,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-top-width: 0;
 }
 
-#zhnpfaegof .gt_heading {
+#rxumctyvse .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -544,13 +599,13 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_bottom_border {
+#rxumctyvse .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_col_headings {
+#rxumctyvse .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -565,7 +620,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_col_heading {
+#rxumctyvse .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -585,7 +640,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   overflow-x: hidden;
 }
 
-#zhnpfaegof .gt_column_spanner_outer {
+#rxumctyvse .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -597,15 +652,15 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 4px;
 }
 
-#zhnpfaegof .gt_column_spanner_outer:first-child {
+#rxumctyvse .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zhnpfaegof .gt_column_spanner_outer:last-child {
+#rxumctyvse .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zhnpfaegof .gt_column_spanner {
+#rxumctyvse .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -617,11 +672,11 @@ Number of Fisher Scoring iterations: 4</code></pre>
   width: 100%;
 }
 
-#zhnpfaegof .gt_spanner_row {
+#rxumctyvse .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zhnpfaegof .gt_group_heading {
+#rxumctyvse .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -647,7 +702,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   text-align: left;
 }
 
-#zhnpfaegof .gt_empty_group_heading {
+#rxumctyvse .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -662,15 +717,15 @@ Number of Fisher Scoring iterations: 4</code></pre>
   vertical-align: middle;
 }
 
-#zhnpfaegof .gt_from_md > :first-child {
+#rxumctyvse .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zhnpfaegof .gt_from_md > :last-child {
+#rxumctyvse .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zhnpfaegof .gt_row {
+#rxumctyvse .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -689,7 +744,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   overflow-x: hidden;
 }
 
-#zhnpfaegof .gt_stub {
+#rxumctyvse .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -702,7 +757,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 5px;
 }
 
-#zhnpfaegof .gt_stub_row_group {
+#rxumctyvse .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -716,15 +771,15 @@ Number of Fisher Scoring iterations: 4</code></pre>
   vertical-align: top;
 }
 
-#zhnpfaegof .gt_row_group_first td {
+#rxumctyvse .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zhnpfaegof .gt_row_group_first th {
+#rxumctyvse .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zhnpfaegof .gt_summary_row {
+#rxumctyvse .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -734,16 +789,16 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 5px;
 }
 
-#zhnpfaegof .gt_first_summary_row {
+#rxumctyvse .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_first_summary_row.thick {
+#rxumctyvse .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zhnpfaegof .gt_last_summary_row {
+#rxumctyvse .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -753,7 +808,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_grand_summary_row {
+#rxumctyvse .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -763,7 +818,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 5px;
 }
 
-#zhnpfaegof .gt_first_grand_summary_row {
+#rxumctyvse .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -773,7 +828,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_last_grand_summary_row_top {
+#rxumctyvse .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -783,11 +838,11 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_striped {
+#rxumctyvse .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zhnpfaegof .gt_table_body {
+#rxumctyvse .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -796,7 +851,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_footnotes {
+#rxumctyvse .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -810,7 +865,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_footnote {
+#rxumctyvse .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -819,7 +874,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 5px;
 }
 
-#zhnpfaegof .gt_sourcenotes {
+#rxumctyvse .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -833,7 +888,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zhnpfaegof .gt_sourcenote {
+#rxumctyvse .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -841,72 +896,72 @@ Number of Fisher Scoring iterations: 4</code></pre>
   padding-right: 5px;
 }
 
-#zhnpfaegof .gt_left {
+#rxumctyvse .gt_left {
   text-align: left;
 }
 
-#zhnpfaegof .gt_center {
+#rxumctyvse .gt_center {
   text-align: center;
 }
 
-#zhnpfaegof .gt_right {
+#rxumctyvse .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zhnpfaegof .gt_font_normal {
+#rxumctyvse .gt_font_normal {
   font-weight: normal;
 }
 
-#zhnpfaegof .gt_font_bold {
+#rxumctyvse .gt_font_bold {
   font-weight: bold;
 }
 
-#zhnpfaegof .gt_font_italic {
+#rxumctyvse .gt_font_italic {
   font-style: italic;
 }
 
-#zhnpfaegof .gt_super {
+#rxumctyvse .gt_super {
   font-size: 65%;
 }
 
-#zhnpfaegof .gt_footnote_marks {
+#rxumctyvse .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zhnpfaegof .gt_asterisk {
+#rxumctyvse .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zhnpfaegof .gt_indent_1 {
+#rxumctyvse .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zhnpfaegof .gt_indent_2 {
+#rxumctyvse .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zhnpfaegof .gt_indent_3 {
+#rxumctyvse .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zhnpfaegof .gt_indent_4 {
+#rxumctyvse .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zhnpfaegof .gt_indent_5 {
+#rxumctyvse .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zhnpfaegof .katex-display {
+#rxumctyvse .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zhnpfaegof div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#rxumctyvse div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -967,6 +1022,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 <p>With every 1 meter increase in edge distance, the odds of a box being occupied by a Swift Parrot decrease by a factor of 0.46 (95% CI: [0.23, 0.89], p = 0.022, <span class="math inline">\(a\)</span> = 0.05).</p>
+</section>
 </section>
 <section id="problem-4" class="level1">
 <h1>Problem 4:</h1>

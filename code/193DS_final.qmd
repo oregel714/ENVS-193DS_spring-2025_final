@@ -251,8 +251,8 @@ ggplot(clean_nb,
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   ) + 
-  labs(x = "Edge Distance (meters)",
-       y = "Swift Parrot Occupancy Probability",
+  labs(x = "Distance from the forest edge (meters)",
+       y = "Swift parrot occupancy probability",
        color = "Year",
        fill = "Year",
        
@@ -266,8 +266,7 @@ ggplot(clean_nb,
 
 ### i. Write a caption for your figure: 
 
-
-
+**Figure 1: The probability of Swift Parrot occupancy in a nesting box tends to decrease the farther away it is located from the forest edge.**  Data from "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird" (Stojanovic et. al, October 28, 2021; https://doi.org/10.5061/dryad.83bk3j9sb). Points represent 
 
 
 ```{r summarizing model coefficients}
