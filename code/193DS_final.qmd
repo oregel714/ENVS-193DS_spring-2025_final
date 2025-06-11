@@ -3,9 +3,8 @@ title: "193DS_final"
 author: "Mark Oregel"
 date: "June 11, 2025"
 format: html
-html: 
-    toc: true 
-    toc-depth: 5
+toc: true 
+toc-depth: 5
 ---
 
 ### GitHub repository: 
@@ -200,7 +199,7 @@ plot(
 
 ```
 
-# g. Select the best model: 
+### g. Select the best model: 
 
 ```{r model-selection, message=FALSE}
 
@@ -266,17 +265,37 @@ ggplot(clean_nb,
 
 ### i. Write a caption for your figure: 
 
-**Figure 1: The probability of Swift Parrot occupancy in a nesting box tends to decrease the farther away it is located from the forest edge.**  Data from "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird" (Stojanovic et. al, October 28, 2021; https://doi.org/10.5061/dryad.83bk3j9sb). Data points represent swift parrot occupancy as either occupied (1, n =) or unoccupied (0, n= ). The solid lines represnt predicted probabilities resulting from a bionomial logistic regression model. The shaded ribbons surrounding the lines represent a 95% confidence interval around the predictions. The two different colors represent our two seasons of interest, 2016 and 2019. 
+**Figure 1: The probability of Swift Parrot occupancy in a nesting box tends to decrease the farther away it is located from the forest edge.**  Data from "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird" (Stojanovic et. al, October 28, 2021; https://doi.org/10.5061/dryad.83bk3j9sb). Data points represent nesting box occupancy as either occupied (1) or unoccupied (0) with color representing the season (year) in which they occur, either 2016 (green, n = 104) or 2019 (blue, n = 123). The solid lines represnt predicted probabilities resulting from a bionomial logistic regression model. The shaded ribbons surrounding the lines represent a 95% confidence interval around the predictions. The two different colors represent our two seasons of interest, 2016 and 2019. 
 
 ### j. Calculate the model predictions: 
 
+
 ```{r calculating model1 predictions, message=FALSE}
-
-ggpredict(model1)
-
-
+# model predictions for Swift Parrot occupancy probability with 95% confidence at 0 meters in 2016
+ggpredict(model1,
+          terms = c("edge_distance [0]", "season [2016]"))
+# model predictions for Swift Parrot occupancy probability with 95% confidence at 900 meters in 2016
+ggpredict(model1,
+          terms = c("edge_distance [900]", "season [2016]"))
+# model predictions for Swift Parrot occupancy probability with 95% confidence at 0 meters in 2019
+ggpredict(model1,
+          terms = c("edge_distance [0]", "season [2019]"))
+# model predictions for Swift Parrot occupancy probability with 95% confidence at 900 meters in 2019
+ggpredict(model1,
+          terms = c("edge_distance [900]", "season [2019]"))
 ```
 
+### k. Interpret your results: 
+
+Based on the visualization in part h and the model predictions in part j, there is a negative relationship between distance from forest edge and probability of Swift Parrot occupancy in nesting boxes for both 2016 and 2019 seasons.
+
+**Model Predictions for 2016:**
+If the distance from the forest edge is 0 meters, the probability of a Swift Parrot occupying a nesting box is 0.48 (95% CI [0.33,0.64]). Additionally, if the distance from the forest edge is 900 meters, the probability of a Swift Parrot occupying a nesting box is 0.12 (95% CI [0.06,0.24]).
+
+**Model Predictions for 2019:**
+If the distance from the forest edge is 0 meters, the probability of a Swift Parrot occupying a nesting box is 0.30 (95% CI [0.18,0.44]). If the distance from the forest edge is 900 meters, the probability of a Swift Parrot occupying a nesting box is 0.06 (95% CI [0.03,0.13]). 
+
+Biologically speaking, 
 
 
 # Problem 4: 
