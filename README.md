@@ -77,9 +77,10 @@ Personal observation data :)
 │   └── SST_update.csv
 |
 └── code
-    ├── 193DS_final.qmd
+    ├── 193DS_spring-2025_final.qmd
+    ├── 193DS_spring-2025_final.html
     ├── 193DS_final.html
-    └── 193DS_final_files
+    └── 193DS_spring-2025_final_files
         ├── libs
         |   ├── quarto-html
         |   |   ├── tippy.umd.min.js
