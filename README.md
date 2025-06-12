@@ -1,6 +1,7 @@
 # ENVS-193DS_spring-2025_final
 
-Spring Final Exam :) 
+This repository is for the spring ENV S 193DS Data and Statistics for Environmental 
+Studies final exam. 
 
 # General Information
 
