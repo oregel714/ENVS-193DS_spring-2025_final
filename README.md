@@ -45,7 +45,7 @@ library(fs)
 Saleh, Dina and Joseph Domagalski. 2021. “Concentrations, Loads, and 
 Associated Trends of Nutrients Entering the Sacramento–San Joaquin Delta, 
 California.” San Francisco Estuary and Watershed Science. 
-DOI: 10.15447/sfews.2021v19iss4art6.
+DOI: https://doi.org/10.15447/sfews.2021v19iss4art6.
 
 **Problem 2:**
 
