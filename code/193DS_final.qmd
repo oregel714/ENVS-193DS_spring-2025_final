@@ -50,7 +50,7 @@ My co-worker can report the effect size of the one-way ANOVA test which would pr
 
 Part 1: We found a strong positive (Pearson's r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg $year^-1$) where distance from headwater significantly predicted annual nitrogen load (p = 0.03). 
 
-Part 2: We found a significant effect size ($r^2$ = effect size) between nitrogen sources in average nitrogen load (kg/$year^-1$) (one-way ANOVA, 'F' = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, $a$ = significance level). On average, 'Tukey HSD would describe any statistically significant difference between pairs of groups' (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg/$year^$) and repeated for the other group in comparison. 
+Part 2: We found a significant effect size ($r^2$ = effect size) between nitrogen sources in average nitrogen load (kg/$year^-1$) (one-way ANOVA, 'F' = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, $a$ = significance level). On average, 'Tukey HSD would describe any statistically significant difference between pairs of groups' (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg/$year^-1$) and repeated for the other group in comparison. 
 
 
 
@@ -89,7 +89,7 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
            color = year # coloring the year 
            )) +
   geom_line(linewidth = 0.5) + # setting the size of the line 
-  geom_point(linewdith = 2) + # setting the size of the points representing the means
+  geom_point(size = 2) + # setting the size of the points representing the means
   scale_color_manual( # setting the colors of each year manually 
     values = c(
       "2023" = "#292f56",
@@ -110,7 +110,8 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
        color = "Year" # setting legend title to year 
        ) + 
   theme( # changing the size/position of the text in the legend and axes to fit the graph 
-    legend.position = c(0.1, 0.75), 
+    legend.position = "inside",
+    legend.position.inside = c(0.1, 0.75), 
     legend.title = element_text(size = 12),
     legend.text = element_text(size = 10),
     axis.title = element_text(size = 13),
