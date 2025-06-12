@@ -23,6 +23,7 @@ library(MuMIn)
 library(DHARMa)
 library(lubridate)
 library(ggeffects)
+library(fs)
 
 # reading in data set 
 
@@ -230,7 +231,7 @@ The best model as determined by Akaike's Information Criterion (ACI) uses season
 
 ### h. Visualize the model predictions: 
 
-```{r visiualizing the model predictions, message=FALSE}
+```{r visualizing the model predictions, message=FALSE}
 
 mod_preds <- ggpredict(model1, # creating new data object from ggpredict function using model1
           terms = c("edge_distance [all]", "season")) # specifying terms and to include all data from edge_distance 
@@ -262,8 +263,8 @@ ggplot(clean_nb, # data frame
     panel.grid.major = element_blank(), # removing panels 
     panel.grid.minor = element_blank() # removing panels 
   ) + 
-  labs(x = "Distance from the forest edge (meters)", # setting custom titles for x axis 
-       y = "Swift parrot occupancy probability", # setting custom titles for y axis 
+  labs(x = "Distance from the Forest Edge (meters)", # setting custom titles for x axis 
+       y = "Swift Parrot Occupancy Probability", # setting custom titles for y axis 
        color = "Year", # legend title 
        fill = "Year" # combining both legends into one 
        
