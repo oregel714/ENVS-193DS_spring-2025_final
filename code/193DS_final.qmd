@@ -37,10 +37,20 @@ nest_boxes <- read_csv(here("data", "occdist.csv"))
 
 # Problem 1: 
 
-a. In part 1, they used a Pearson's correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. 
+### a. Transparents statistical methods:
+
+In part 1, they used a Pearson's correlation test as this would mean that we are trying to understand if there is a correlation between distance from headwater and total nitrogen load. 
 In part 2, they used an One-way Analysis of Variance (ANOVA) to determine if there is a difference between the sources of nitrogen and average nitrogen load. 
 
-b. 
+### b. More information needed: 
+
+My co-worker can report the effect size of the one-way ANOVA test which would provide a measure of how much the grouping variable explains the response variable, in this case, the effect or magnitude of source type on average nitrogen load. This bolsters their results and provides the audience a measure of the difference between groups. Additionally, since their result is significant (p < 0.05), they can run a Tukey's Honestly Significant Difference (Tukey HSD) post-hoc test which would explain which groups are statistically significantly different when compared. For example, grassland and urban land sources might have significantly higher average nitrogen loads than fertilizer. This test would provide additional important information for understanding any significant differences between nitrogen sources and average nitrogen load. 
+
+### c. Suggestions for rewriting: 
+
+Part 1: We found a strong positive (Pearson's r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg $year^-1$) where distance from headwater significantly predicted annual nitrogen load (p = 0.03). 
+
+Part 2: We found a significant effect size ($r^2$ = effect size) between nitrogen sources in average nitrogen load (kg/$year^-1$) (one-way ANOVA, 'F' = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, $a$ = significance level). On average, 'Tukey HSD would describe any statistically significant difference between pairs of groups' (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg/$year^$) and repeated for the other group in comparison. 
 
 
 
@@ -96,8 +106,8 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
   
   theme_bw() + # setting the theme to black and white 
   labs(y = "Mean monthly sea surface temperature (°C)", # setting titles for axes 
-       x = "Month",
-       color = "Year"
+       x = "Month", # setting title of x axis to month 
+       color = "Year" # setting legend title to year 
        ) + 
   theme( # changing the size/position of the text in the legend and axes to fit the graph 
     legend.position = c(0.1, 0.75), 
@@ -105,8 +115,8 @@ ggplot(data = sst_clean, # starting with data set 'sst_clean'
     legend.text = element_text(size = 10),
     axis.title = element_text(size = 13),
     axis.text = element_text(size = 11),
-    panel.grid.major = element_blank(), # removing the grids/panels in the back of the graph
-    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(), # removing the major grids/panels in the back of the graph
+    panel.grid.minor = element_blank(), # removing the minor grids/panels 
     
   )
 ```
@@ -183,7 +193,8 @@ model3 <- glm(
 f. Check the diagnostics 
 
 ```{r, message=FALSE, model-diagnostics}
- 
+
+# plotting simulated residuals for all models 
 plot(
   simulateResiduals(model0)
 )
@@ -210,7 +221,7 @@ AICc(
   model2,
   model3
 ) |> 
-  arrange(AICc)
+  arrange(AICc) # arranging in order from least to greatest descending 
 
 ```
 
@@ -220,45 +231,45 @@ The best model as determined by Akaike's Information Criterion (ACI) uses season
 
 ```{r visiualizing the model predictions, message=FALSE}
 
-mod_preds <- ggpredict(model1,
-          terms = c("edge_distance [all]", "season"))
+mod_preds <- ggpredict(model1, # creating new data object from ggpredict function using model1
+          terms = c("edge_distance [all]", "season")) # specifying terms and to include all data from edge_distance 
 
-ggplot(clean_nb,
-       aes(x = edge_distance,
-           y = sp,
-           color = season)) + 
-  geom_point(data = clean_nb,
-             size = 2,
-             alpha = 0.4) + 
-  geom_ribbon(data = mod_preds,
-              aes(x = x,
-                  y = predicted,
-                  ymin = conf.low,
-                  ymax = conf.high,
-                  fill = group),
-              alpha = 0.4,
-              color = NA) + 
-  geom_line(data = mod_preds,
-            aes(x = x,
-                y = predicted,
-                color = group),
-            linewidth = 1) +
-  scale_y_continuous(limits = c(0, 1),
-                     breaks = c(0, 1)) + 
-  theme_bw() + 
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+ggplot(clean_nb, # data frame 
+       aes(x = edge_distance, # setting x axis as edge_distance 
+           y = sp, # setting y axis as Swift Parrot 
+           color = season)) + # setting color to season 
+  geom_point(data = clean_nb, # plotting points using data from clean_nb
+             size = 2, # setting size of points 
+             alpha = 0.4) + # setting point transparency 
+  geom_ribbon(data = mod_preds, # using data from mod_preds to create confidence interval ribbon 
+              aes(x = x, # setting x axis as distance value from forest edge 
+                  y = predicted, # setting y axis as predicted value 
+                  ymin = conf.low, # setting bottom edge of the ribbon  
+                  ymax = conf.high, # setting top edge of the ribbon 
+                  fill = group), # filling based on group (season)
+              alpha = 0.4, # adding transparency 
+              color = NA) + # removing outline of ribbon 
+  geom_line(data = mod_preds, # creating line using data from mod_preds
+            aes(x = x, # setting x axis as edge_distance 
+                y = predicted, # setting y axis as predicted 
+                color = group), # assigning color by group (season)
+            linewidth = 1) + # changing size 
+  scale_y_continuous(limits = c(0, 1), # setting y axis with a limit of 0 to 1 
+                     breaks = c(0, 1)) + # setting y axis to only label 0 to 1 
+  theme_bw() + # setting color theme for elements 
+  theme( 
+    panel.grid.major = element_blank(), # removing panels 
+    panel.grid.minor = element_blank() # removing panels 
   ) + 
-  labs(x = "Distance from the forest edge (meters)",
-       y = "Swift parrot occupancy probability",
-       color = "Year",
-       fill = "Year"
+  labs(x = "Distance from the forest edge (meters)", # setting custom titles for x axis 
+       y = "Swift parrot occupancy probability", # setting custom titles for y axis 
+       color = "Year", # legend title 
+       fill = "Year" # combining both legends into one 
        
   ) + 
-  scale_color_manual(values = c("2016" = "olivedrab",
+  scale_color_manual(values = c("2016" = "olivedrab", # setting outline color manually 
                                 "2019" = "blue")) + 
-  scale_fill_manual(values = c("2016" = "olivedrab",
+  scale_fill_manual(values = c("2016" = "olivedrab", # setting fill colors 
                                "2019" = "blue"))
 
 ```
@@ -295,7 +306,7 @@ If the distance from the forest edge is 0 meters, the probability of a Swift Par
 **Model Predictions for 2019:**
 If the distance from the forest edge is 0 meters, the probability of a Swift Parrot occupying a nesting box is 0.30 (95% CI [0.18,0.44]). If the distance from the forest edge is 900 meters, the probability of a Swift Parrot occupying a nesting box is 0.06 (95% CI [0.03,0.13]). 
 
-Biologically speaking, 
+Biologically speaking, the probability of Swift Parrots occupying nesting boxes far away from the forest edge decreases due to competitors, such as Tree Martins, exploiting the nesting boxes in higher frequency as distance from the edge of the forest increased.  This implies that Tree Martins displayed a positive relationship with probability of nesting box occupancy and distance from the forest edge.
 
 
 # Problem 4: 
