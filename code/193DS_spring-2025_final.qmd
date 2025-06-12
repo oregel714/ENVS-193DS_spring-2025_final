@@ -49,9 +49,9 @@ My co-worker can report the effect size of the one-way ANOVA test which would pr
 
 ### c. Suggestions for rewriting: 
 
-Part 1: We found a strong positive (Pearson's r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg $year^-1$) where distance from headwater significantly predicted annual nitrogen load (p = 0.03). 
+Part 1: We found a strong positive (Pearson's r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg year<sup>-1</sup>) where distance from headwater significantly predicted annual nitrogen load (p = 0.03). 
 
-Part 2: We found a significant effect size ($r^2$ = effect size) between nitrogen sources in average nitrogen load (kg/$year^-1$) (one-way ANOVA, 'F' = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, $a$ = significance level). On average, 'Tukey HSD would describe any statistically significant difference between pairs of groups' (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg/$year^-1$) and repeated for the other group in comparison. 
+Part 2: We found a significant effect size ($r^2$ = effect size) between nitrogen sources in average nitrogen load (kg year<sup>-1</sup>) (one-way ANOVA, 'F' = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, α = significance level). On average, 'Tukey HSD would describe any statistically significant difference between pairs of groups' (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg year<sup>-1</sup>) and repeated for the other group in comparison. 
 
 
 

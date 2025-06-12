@@ -212,8 +212,8 @@ window.Quarto = {
 </section>
 <section id="c.-suggestions-for-rewriting" class="level3">
 <h3 class="anchored" data-anchor-id="c.-suggestions-for-rewriting">c.&nbsp;Suggestions for rewriting:</h3>
-<p>Part 1: We found a strong positive (Pearson’s r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg <span class="math inline">\(year^-1\)</span>) where distance from headwater significantly predicted annual nitrogen load (p = 0.03).</p>
-<p>Part 2: We found a significant effect size (<span class="math inline">\(r^2\)</span> = effect size) between nitrogen sources in average nitrogen load (kg/<span class="math inline">\(year^-1\)</span>) (one-way ANOVA, ‘F’ = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, <span class="math inline">\(a\)</span> = significance level). On average, ‘Tukey HSD would describe any statistically significant difference between pairs of groups’ (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg/<span class="math inline">\(year^-1\)</span>) and repeated for the other group in comparison.</p>
+<p>Part 1: We found a strong positive (Pearson’s r = correlation coefficient) relationship between distance from headwater (km) and annual total nitrogen load (kg year<sup>-1</sup>) where distance from headwater significantly predicted annual nitrogen load (p = 0.03).</p>
+<p>Part 2: We found a significant effect size (<span class="math inline">\(r^2\)</span> = effect size) between nitrogen sources in average nitrogen load (kg/year<sup>-1</sup>) (one-way ANOVA, ‘F’ = distribution (among groups df, withing groups df) = F - statistic, p = 0.02, α = significance level). On average, ‘Tukey HSD would describe any statistically significant difference between pairs of groups’ (a quantity greater or less than, followed by confidence interval [lower bound, upper bound] kg year<sup>-1</sup>) and repeated for the other group in comparison.</p>
 </section>
 </section>
 <section id="problem-2" class="level1">
@@ -239,11 +239,11 @@ window.Quarto = {
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2023  Nov               16.8
-2 2018  Oct               18.5
-3 2023  Oct               17.4
-4 2019  Sep               18.8
-5 2023  Jan               14  </code></pre>
+1 2022  May               13.4
+2 2019  Dec               15  
+3 2020  Oct               19  
+4 2023  Oct               17.4
+5 2022  Dec               14.8</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># displaying the sample </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -528,7 +528,7 @@ model0  1 238.8318</code></pre>
 </section>
 <section id="i.-write-a-caption-for-your-figure" class="level3">
 <h3 class="anchored" data-anchor-id="i.-write-a-caption-for-your-figure">i. Write a caption for your figure:</h3>
-<p><strong>Figure 1: The probability of Swift Parrot occupancy in a nesting box tends to decrease the farther away it is located from the forest edge.</strong> Data from “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird” (Stojanovic et. al, October 28, 2021; https://doi.org/10.5061/dryad.83bk3j9sb). Data points represent nesting box occupancy probability for Swift Parrots as either occupied (1) or unoccupied (0) with color representing the season (year) in which they occur, either 2016 (green, n = 29) or 2019 (blue, n = 20). The solid lines represent predicted probabilities resulting from a binomial logistic regression model. The shaded ribbons surrounding the lines represent a 95% confidence interval around the predictions. The two different colors represent our two seasons of interest, 2016 and 2019.</p>
+<p><strong>Figure 1: The probability of Swift Parrot occupancy in a nesting box tends to decrease the farther away it is located from the forest edge.</strong> Data from “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird” (Stojanovic et. al, October 28, 2021; https://doi.org/10.5061/dryad.83bk3j9sb). Data points represent observations of nesting box occupancy as either occupied (1) or unoccupied (0) with color representing the season (year) in which they occur, either 2016 (green, n = 104) or 2019 (blue, n = 123). The solid lines represent predicted probabilities resulting from a binomial logistic regression model. The shaded ribbons surrounding the lines represent a 95% confidence interval around the predictions. The two different colors represent our two seasons of interest, 2016 and 2019.</p>
 </section>
 <section id="j.-calculate-the-model-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="j.-calculate-the-model-predictions">j. Calculate the model predictions:</h3>
